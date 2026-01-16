@@ -98,4 +98,19 @@ async function loginUser(req, res) {
   }
 }
 
-export { createUser, loginUser };
+// * logout user function
+
+async function logoutUser(req, res) {
+  try {
+    return res.status(200).clearCookie("token").json({
+      message: "User logged out",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "internal server user is not logged out",
+      error: error,
+    });
+  }
+}
+
+export { createUser, loginUser, logoutUser };
