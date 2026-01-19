@@ -64,7 +64,7 @@ async function loginUser(req, res) {
     }
     const isPasswordCorrect = await bcrypt.compare(
       password,
-      isUserExist.password
+      isUserExist.password,
     );
     if (!isPasswordCorrect) {
       return res.status(400).json({
@@ -76,7 +76,7 @@ async function loginUser(req, res) {
       process.env.JWT_SECERET,
       {
         expiresIn: "1d",
-      }
+      },
     );
 
     return res
@@ -113,4 +113,124 @@ async function logoutUser(req, res) {
   }
 }
 
-export { createUser, loginUser, logoutUser };
+// ? Food partner routes
+
+// // create food partner
+async function createFoodPartner(req, res) {
+  try {
+    const { fullName, email, password } = req.body;
+    if (!fullName || !email || !password) {
+      return res.status(400).json({
+        message: "All fields are required",
+      });
+    }
+    const isUserExist = await User.findOne({ email });
+    if (isUserExist) {
+      return res.status(400).json({
+        message: "food partner already exist",
+      });
+    }
+    const hashPass = await bcrypt.hash(password, 10);
+    const user = await User.create({
+      fullName,
+      email,
+      password: hashPass,
+    });
+
+    const token = await jwt.sign({ id: user?._id }, process.env.JWT_SECERET, {
+      expiresIn: "1d",
+    });
+    return res
+      .status(201)
+      .cookie("token", token)
+      .json({
+        message: "food partner created successfully",
+        user: {
+          id: user?._id,
+          email: user.email,
+          fullName: user.fullName,
+        },
+      });
+  } catch (error) {
+    return res.status(500).json({
+      message: "internal server foodpartner haven't created",
+      error: error,
+    });
+  }
+}
+
+// // login food partner
+
+async function loginFoodPartner(req, res) {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({
+        message: "All fields are required",
+      });
+    }
+    const isUserExist = await User.findOne({ email });
+    if (!isUserExist) {
+      return res.status(400).json({
+        message: "foodPartner doesn't exist with this email",
+      });
+    }
+    const isPasswordCorrect = await bcrypt.compare(
+      password,
+      isUserExist.password,
+    );
+    if (!isPasswordCorrect) {
+      return res.status(400).json({
+        message: "invalid password",
+      });
+    }
+    const token = await jwt.sign(
+      { id: isUserExist?._id },
+      process.env.JWT_SECERET,
+      {
+        expiresIn: "1d",
+      },
+    );
+
+    return res
+      .status(200)
+      .cookie("token", token)
+      .json({
+        message: "login successfully",
+        user: {
+          id: isUserExist?._id,
+          email: isUserExist.email,
+          fullName: isUserExist.fullName,
+        },
+      });
+  } catch (error) {
+    return res.status(500).json({
+      message: "internal server user is not logged in",
+      error: error,
+    });
+  }
+}
+
+// // logout user function
+
+async function logoutFoodPartner(req, res) {
+  try {
+    return res.status(200).clearCookie("token").json({
+      message: "User logged out",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "internal server user is not logged out",
+      error: error,
+    });
+  }
+}
+
+export {
+  createUser,
+  loginUser,
+  logoutUser,
+  logoutFoodPartner,
+  loginFoodPartner,
+  createFoodPartner,
+};
