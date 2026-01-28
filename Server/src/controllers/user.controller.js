@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import FoodPartner from "../models/foodpartner.model.js";
 
 // * create user function
 async function createUser(req, res) {
@@ -118,21 +119,21 @@ async function logoutUser(req, res) {
 // // create food partner
 async function createFoodPartner(req, res) {
   try {
-    const { fullName, email, password } = req.body;
-    if (!fullName || !email || !password) {
+    const { name, email, password } = req.body;
+    if (!name || !email || !password) {
       return res.status(400).json({
         message: "All fields are required",
       });
     }
-    const isUserExist = await User.findOne({ email });
+    const isUserExist = await FoodPartner.findOne({ email });
     if (isUserExist) {
       return res.status(400).json({
         message: "food partner already exist",
       });
     }
     const hashPass = await bcrypt.hash(password, 10);
-    const user = await User.create({
-      fullName,
+    const user = await FoodPartner.create({
+      name,
       email,
       password: hashPass,
     });
@@ -148,7 +149,7 @@ async function createFoodPartner(req, res) {
         user: {
           id: user?._id,
           email: user.email,
-          fullName: user.fullName,
+          name: user.name,
         },
       });
   } catch (error) {
@@ -169,7 +170,7 @@ async function loginFoodPartner(req, res) {
         message: "All fields are required",
       });
     }
-    const isUserExist = await User.findOne({ email });
+    const isUserExist = await FoodPartner.findOne({ email });
     if (!isUserExist) {
       return res.status(400).json({
         message: "foodPartner doesn't exist with this email",
