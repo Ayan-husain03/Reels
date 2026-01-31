@@ -46,4 +46,21 @@ async function createFoodItem(req, res) {
   }
 }
 
-export { createFoodItem };
+const getAllFoodItem = async (req, res) => {
+  try {
+    const foodItems = await FoodItem.find().populate("foodPartner", "_id name");
+    return res.status(200).json({
+      success: true,
+      count: foodItems.length,
+      data: foodItems,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Food items fetch failed",
+      error: error.message,
+    });
+  }
+};
+
+export { createFoodItem, getAllFoodItem };
