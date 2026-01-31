@@ -1,14 +1,16 @@
-import ImageKit from "@imagekit/nodejs";
+import ImageKit from "imagekit";
 
+// console.log(process.env.IMAGEKIT_PRIVATE_KEY);
 const imageKit = new ImageKit({
-  publicKey: process.env.IMAGEKIT_PUBLICKEY,
-  privateKey: process.env.IMAGEKIT_PRIVATEKEY,
-  url: process.env.IMAGEKIT_URL,
+  privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
+  publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
+  urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
 });
 
+console.log("IK PRIVATE:", process.env.IMAGEKIT_PRIVATE_KEY);
 const uploadFile = async (file, fileName) => {
   try {
-    const result = await imageKit.files.upload({
+    const result = await imageKit.upload({
       file: file,
       fileName: fileName,
     });
@@ -18,4 +20,4 @@ const uploadFile = async (file, fileName) => {
   }
 };
 
-export default uploadFile;
+export { uploadFile };

@@ -15,12 +15,16 @@ const foodItemSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    foodPartner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "FoodPartner",
+    },
   },
   {
     timestamps: true,
   },
 );
 
-const FoodItem = mongoose.model("FoodItem".foodItemSchema);
+const FoodItem = mongoose.model("FoodItem", foodItemSchema);
 
 export default FoodItem;
