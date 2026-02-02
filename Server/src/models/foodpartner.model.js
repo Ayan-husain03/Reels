@@ -6,6 +6,14 @@ const foodPartner = new mongoose.Schema(
       type: String,
       required: true,
     },
+    phone: {
+      type: String,
+      required: true,
+    },
+    address: {
+      type: String,
+      required: true,
+    },
     email: {
       type: String,
       required: true,
@@ -16,7 +24,7 @@ const foodPartner = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const FoodPartner = mongoose.model("FoodPartner", foodPartner);

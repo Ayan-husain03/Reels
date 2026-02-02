@@ -6,20 +6,24 @@ import { TextField } from "../../component/TextField";
 
 const FoodPartnerRegister = () => (
   <PageWrapper>
-    <Card title="Partner registration" subtitle="Join as a food partner">
-      <TextField placeholder="Business / partner name" />
-      <TextField type="email" placeholder="Business email" />
-      <TextField type="password" placeholder="Password" />
+    <form>
+      <Card title="Partner registration" subtitle="Join as a food partner">
+        <TextField placeholder="Business / partner name" />
+        <TextField type="email" placeholder="Business email" />
+        <TextField type="text" placeholder="phone" />
+        <TextField type="text" placeholder="address" />
+        <TextField type="password" placeholder="Password" />
 
-      <PrimaryButton>Register as partner</PrimaryButton>
+        <PrimaryButton>Register as partner</PrimaryButton>
 
-      <FooterLinks
-        leftText="Already a partner? Login"
-        leftTo="/foodPartner-login"
-        rightText="Register as User"
-        rightTo="/user-register"
-      />
-    </Card>
+        <FooterLinks
+          leftText="Already a partner? Login"
+          leftTo="/foodPartner-login"
+          rightText="Register as User"
+          rightTo="/user-register"
+        />
+      </Card>
+    </form>
   </PageWrapper>
 );
 

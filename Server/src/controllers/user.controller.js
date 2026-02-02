@@ -6,8 +6,8 @@ import FoodPartner from "../models/foodpartner.model.js";
 // * create user function
 async function createUser(req, res) {
   try {
-    const { fullName, email, password } = req.body;
-    if (!fullName || !email || !password) {
+    const { name, email, password } = req.body;
+    if (!name || !email || !password) {
       return res.status(400).json({
         message: "All fields are required",
       });
@@ -20,7 +20,7 @@ async function createUser(req, res) {
     }
     const hashPass = await bcrypt.hash(password, 10);
     const user = await User.create({
-      fullName,
+      name,
       email,
       password: hashPass,
     });
@@ -36,7 +36,7 @@ async function createUser(req, res) {
         user: {
           id: user?._id,
           email: user.email,
-          fullName: user.fullName,
+          name: user.name,
         },
       });
   } catch (error) {
@@ -119,8 +119,8 @@ async function logoutUser(req, res) {
 // // create food partner
 async function createFoodPartner(req, res) {
   try {
-    const { name, email, password } = req.body;
-    if (!name || !email || !password) {
+    const { name, email, password, phone, address } = req.body;
+    if (!name || !email || !password || !phone || !address) {
       return res.status(400).json({
         message: "All fields are required",
       });
@@ -136,6 +136,8 @@ async function createFoodPartner(req, res) {
       name,
       email,
       password: hashPass,
+      phone,
+      address,
     });
 
     const token = await jwt.sign({ id: user?._id }, process.env.JWT_SECERET, {
@@ -150,6 +152,8 @@ async function createFoodPartner(req, res) {
           id: user?._id,
           email: user.email,
           name: user.name,
+          phone: user.phone,
+          address: user.address,
         },
       });
   } catch (error) {
