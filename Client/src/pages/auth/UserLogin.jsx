@@ -26,8 +26,9 @@ const UserLogin = () => {
         password: form.password,
       });
       console.log(res.data);
+      navigate("/");
     } catch (error) {
-        console.log(error.response?.data || "error in login")
+      console.log(error.response?.data || "error in login");
     } finally {
     }
   };
