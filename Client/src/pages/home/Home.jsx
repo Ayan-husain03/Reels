@@ -1,5 +1,5 @@
 import React from "react";
-import { Heart, MessageCircle, Share2, MoreVertical } from "lucide-react";
+import { Heart, MessageCircle, Share2, MoreVertical, User } from "lucide-react";
 
 // Dummy data (later API se aayega)
 const reels = [
@@ -37,7 +37,7 @@ const ReelCard = ({ reel }) => {
       {/* Top bar */}
       <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-4 py-3 text-white">
         <h1 className="text-lg font-semibold">Reels</h1>
-        <MoreVertical className="h-5 w-5" />
+        <User className="h-5 w-5" />
       </div>
 
       {/* Right actions */}
