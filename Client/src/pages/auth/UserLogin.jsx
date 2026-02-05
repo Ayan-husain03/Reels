@@ -19,7 +19,6 @@ const UserLogin = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(form);
     try {
       const res = await api.post("/user/login", {
         email: form.email,

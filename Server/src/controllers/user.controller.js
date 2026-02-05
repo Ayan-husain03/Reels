@@ -185,7 +185,7 @@ async function loginFoodPartner(req, res) {
       isUserExist.password,
     );
     if (!isPasswordCorrect) {
-      return res.status(400).json({
+      return res.status(401).json({
         message: "invalid password",
       });
     }

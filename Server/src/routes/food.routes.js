@@ -7,6 +7,7 @@ import { upload } from "../middleware/multer.middleware.js";
 import {
   createFoodItem,
   getAllFoodItem,
+  getFoodPartnerById,
 } from "../controllers/foodItem.controller.js";
 // import { createFoodPartner } from "../controllers/user.controller.js";
 
@@ -19,5 +20,6 @@ foodRouter.post(
   createFoodItem,
 );
 foodRouter.get("/all", authUserMiddleware, getAllFoodItem);
+foodRouter.get("/food-partner/:_id", authUserMiddleware, getFoodPartnerById);
 
 export default foodRouter;

@@ -1,5 +1,6 @@
 import { uploadFile } from "../lib/imagekit.js";
 import FoodItem from "../models/foodItem.model.js";
+import FoodPartner from "../models/foodpartner.model.js";
 
 async function createFoodItem(req, res) {
   try {
@@ -63,4 +64,25 @@ const getAllFoodItem = async (req, res) => {
   }
 };
 
-export { createFoodItem, getAllFoodItem };
+const getFoodPartnerById = async (req, res) => {
+  try {
+    const foodPartnerId = req.params._id;
+    const foodPartner = await FoodPartner.findById(foodPartnerId);
+    if (!foodPartner) {
+      res.status(404).json({
+        message: "food partner not found",
+      });
+    }
+    return res.status(200).json({
+      foodPartner,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Food items fetch failed",
+      error: error.message,
+    });
+  }
+};
+
+export { createFoodItem, getAllFoodItem, getFoodPartnerById };

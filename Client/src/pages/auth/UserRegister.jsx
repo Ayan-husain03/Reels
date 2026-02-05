@@ -30,11 +30,6 @@ const UserRegister = () => {
         password: form.password,
       });
       console.log("success: ", res.data);
-      setForm({
-        name: "",
-        email: "",
-        password: "",
-      });
         navigate("/")
     } catch (error) {
       console.error(error.response?.data || "error creating user");
