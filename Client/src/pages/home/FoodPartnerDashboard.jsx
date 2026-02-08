@@ -7,9 +7,10 @@ const FoodPartnerDashboard = () => {
   const [form, setForm] = useState({
     name: "",
     description: "",
-    video: null,
+    video: "",
   });
 
+  console.log(form);
   const [loading, setLoading] = useState(false);
 
   function handleChange(e) {
@@ -30,16 +31,19 @@ const FoodPartnerDashboard = () => {
 
     try {
       setLoading(true);
-
       const data = new FormData();
       data.append("name", form.name);
       data.append("description", form.description);
       data.append("video", form.video);
+      console.log(data);
 
-      await api.post("/food-items", data);
-
+      const res = await api.post("/food/create-food", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      // console.log(res.data);
       toast.success("Food reel published 🎉");
-
       setForm({
         name: "",
         description: "",
@@ -74,7 +78,7 @@ const FoodPartnerDashboard = () => {
             name="video"
             accept="video/*"
             onChange={handleChange}
-            className="hidden"
+            className="hidden text-white"
           />
 
           <div className="space-y-2">
@@ -94,7 +98,7 @@ const FoodPartnerDashboard = () => {
             placeholder="Food name (e.g. Cheese Burger)"
             value={form.name}
             onChange={handleChange}
-            className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-4 py-3 text-sm focus:ring-2 focus:ring-orange-500 outline-none"
+            className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-4 py-3 text-sm focus:ring-2 focus:ring-orange-500 outline-none text-white"
           />
 
           <textarea
@@ -103,7 +107,7 @@ const FoodPartnerDashboard = () => {
             value={form.description}
             onChange={handleChange}
             rows={3}
-            className="w-full resize-none rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-4 py-3 text-sm focus:ring-2 focus:ring-orange-500 outline-none"
+            className="w-full text-white resize-none rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-4 py-3 text-sm focus:ring-2 focus:ring-orange-500 outline-none"
           />
         </div>
 

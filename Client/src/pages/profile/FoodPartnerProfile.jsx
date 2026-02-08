@@ -15,17 +15,15 @@ const FoodPartnerProfile = () => {
     try {
       const res = await api.get(`/food/food-partner/${id}`);
       setPartner(res.data?.foodPartner);
-      //   setReels(res.data.reels);
-      console.log(res.data.foodPartner);
-      console.log(partner);
+      setReels(res.data?.foodItems);
+      console.log(res.data);
     } catch (err) {
       console.log(err);
     }
   };
-
   useEffect(() => {
     fetchProfile();
-  }, []);
+  }, [id]);
 
   return (
     <div className="min-h-screen relative bg-black text-white">
@@ -66,15 +64,15 @@ const FoodPartnerProfile = () => {
         {/* Stats Row */}
         <div className="flex justify-around mt-6 text-center">
           <div>
-            <p className="text-lg font-semibold">0</p>
+            <p className="text-lg font-semibold">{reels.length}</p>
             <p className="text-xs text-gray-400">Reels</p>
           </div>
           <div>
-            <p className="text-lg font-semibold">0</p>
+            <p className="text-lg font-semibold">8</p>
             <p className="text-xs text-gray-400">Followers</p>
           </div>
           <div>
-            <p className="text-lg font-semibold">0</p>
+            <p className="text-lg font-semibold">10</p>
             <p className="text-xs text-gray-400">Following</p>
           </div>
         </div>
@@ -85,7 +83,7 @@ const FoodPartnerProfile = () => {
 
       {/* Reels grid (same as tumne rakha hai) */}
       <div className="grid grid-cols-3 gap-1 p-1">
-        {reels.map((reel) => (
+        {reels?.map((reel) => (
           <video
             key={reel._id}
             src={reel.video}

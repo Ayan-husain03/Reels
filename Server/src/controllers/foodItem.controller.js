@@ -68,13 +68,18 @@ const getFoodPartnerById = async (req, res) => {
   try {
     const foodPartnerId = req.params._id;
     const foodPartner = await FoodPartner.findById(foodPartnerId);
+
     if (!foodPartner) {
-      res.status(404).json({
+      return res.status(404).json({
         message: "food partner not found",
       });
     }
+    const foodItems = await FoodItem.find({
+      foodPartner: foodPartnerId,
+    });
     return res.status(200).json({
       foodPartner,
+      foodItems,
     });
   } catch (error) {
     res.status(500).json({
