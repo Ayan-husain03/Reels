@@ -3,31 +3,33 @@ import {
   Heart,
   MessageCircle,
   Share2,
-  MoreVertical,
   User,
-  Volume,
   VolumeOff,
-  Volume1Icon,
-  VolumeIcon,
   LucideVolume2,
+  BookMarked,
+  Bookmark,
 } from "lucide-react";
 import api from "../../lib/axios";
 import { Link } from "react-router";
 
-// Dummy data (later API se aayega)
-
-const ReelCard = ({ reel }) => {
-  const [muted, setMuted] = useState(true);
+const ReelCard = ({ reel, muted, setMuted }) => {
   const [showIcon, setShowIcon] = useState(false);
   const videoRef = useRef(null);
 
   const handleTap = () => {
-    setMuted((prev) => !prev);
+    setMuted((prev) => !prev); // 🔥 GLOBAL TOGGLE
     setShowIcon(true);
     setTimeout(() => {
       setShowIcon(false);
     }, 1200);
   };
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = muted; // 🔥 Important
+    }
+  }, [muted]);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -46,21 +48,19 @@ const ReelCard = ({ reel }) => {
       if (videoRef.current) observer.unobserve(videoRef.current);
     };
   }, []);
+
   return (
     <div className="relative h-screen w-full snap-start bg-black">
-      {/* Video */}
       <video
         src={reel.video}
         ref={videoRef}
         className="h-full w-full object-cover"
         autoPlay
-        muted={muted}
         loop
         playsInline
         onClick={handleTap}
       />
 
-      {/* Center Volume Icon */}
       {showIcon && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div className="bg-black/60 backdrop-blur-md p-6 rounded-full text-white">
@@ -73,26 +73,24 @@ const ReelCard = ({ reel }) => {
         </div>
       )}
 
-      {/* Top bar */}
       <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-4 py-3 text-white">
         <h1 className="text-lg font-semibold">Reels</h1>
         <User className="h-5 w-5" />
       </div>
 
-      {/* Right actions */}
       <div className="absolute right-3 bottom-24 flex flex-col items-center gap-6 text-white">
         <div className="flex flex-col items-center">
-          <Heart className="h-7 w-7" />
+          <Heart className="h-7 w-7" fill="#ff0000" stroke="#ff0000" />
           <span className="text-xs mt-1">{reel.likes || 10}</span>
         </div>
         <div className="flex flex-col items-center">
           <MessageCircle className="h-7 w-7" />
           <span className="text-xs mt-1">{reel.comments || 20}</span>
         </div>
-        <Share2 className="h-7 w-7" />
+        {/* <Share2 className="h-7 w-7" /> */}
+        <Bookmark className="h-7 w-7" color="#ffffff" />
       </div>
 
-      {/* Bottom content */}
       <div className="absolute bottom-6 left-0 right-0 px-4 text-white">
         <p className="text-sm font-semibold">
           <Link to={`/foodPartner/${reel?.foodPartner?._id}`}>
@@ -108,6 +106,8 @@ const ReelCard = ({ reel }) => {
 
 const Home = () => {
   const [data, setData] = useState([]);
+  const [muted, setMuted] = useState(true); // 🔥 GLOBAL STATE
+
   async function getReels() {
     try {
       const res = await api.get("/food/all", {
@@ -118,14 +118,20 @@ const Home = () => {
       console.error(err);
     }
   }
+
   useEffect(() => {
     getReels();
   }, []);
-  console.log(data);
+
   return (
     <div className="h-screen w-full overflow-y-scroll snap-y snap-mandatory bg-black">
       {data?.map((reel) => (
-        <ReelCard key={reel?._id} reel={reel} />
+        <ReelCard
+          key={reel?._id}
+          reel={reel}
+          muted={muted}
+          setMuted={setMuted}
+        />
       ))}
     </div>
   );
