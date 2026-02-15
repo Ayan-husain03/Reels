@@ -9,12 +9,18 @@ import {
   User2Icon,
 } from "lucide-react";
 
+import api from "../../lib/axios";
+import toast from "react-hot-toast";
+import useAuthStore from "../../store/userAuthStore";
+import { useEffect } from "react";
+
 const UserProfile = () => {
-  const user = {
-    name: "Ayan Hussain",
-    email: "ayan@gmail.com",
-    avatar: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
-  };
+  const { user, loading, fetchUser } = useAuthStore();
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
+  // console.log(user);
 
   const [showPasswordForm, setShowPasswordForm] = useState(false);
 
@@ -27,9 +33,29 @@ const UserProfile = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(form);
+    // console.log(form);
+    try {
+      const res = await api.put("/user/changePassword", {
+        oldPassword: form.oldPassword.trim(),
+        newPassword: form.newPassword.trim(),
+      });
+      // console.log(res);
+      toast.success(res?.data?.message || "password changed");
+    } catch (error) {
+      console.error(
+        error.response?.data?.message || "error while updating password",
+      );
+      toast.error(
+        error.response?.data?.message || "error while updating password",
+      );
+    } finally {
+      setForm({
+        oldPassword: "",
+        newPassword: "",
+      });
+    }
   };
 
   return (
@@ -40,10 +66,10 @@ const UserProfile = () => {
           <User2Icon className="w-24 h-24 rounded-full border-4 " />
           {/* <img src={user.avatar} alt="avatar" /> */}
           <h2 className="text-xl font-semibold mt-3 flex items-center gap-2">
-            <User size={18} /> {user.name}
+            <User size={18} /> {user?.user.name || "User"}
           </h2>
           <p className="text-gray-400 flex items-center gap-2 mt-1">
-            <Mail size={16} /> {user.email}
+            <Mail size={16} /> {user?.user?.email || "user@mail.com"}
           </p>
         </div>
 

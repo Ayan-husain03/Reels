@@ -265,7 +265,20 @@ async function changeUserPassword(req, res) {
     });
   }
 }
-
+async function getUser(req, res) {
+  const id = req.user?._id;
+  const user = await User.findById(id).select("-password");
+  if (!user) {
+    return res.status(404).json({
+      message: "User not found",
+      error: error,
+    });
+  }
+  return res.status(200).json({
+    message: "user fetched successfully",
+    user,
+  });
+}
 export {
   createUser,
   loginUser,
@@ -274,4 +287,5 @@ export {
   loginFoodPartner,
   createFoodPartner,
   changeUserPassword,
+  getUser,
 };

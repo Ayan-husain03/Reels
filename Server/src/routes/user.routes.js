@@ -3,6 +3,7 @@ import {
   changeUserPassword,
   createFoodPartner,
   createUser,
+  getUser,
   loginFoodPartner,
   loginUser,
   logoutFoodPartner,
@@ -18,6 +19,7 @@ router.route("/register").post(createUser);
 router.route("/login").post(loginUser);
 router.route("/logout").get(logoutUser);
 router.route("/changePassword").put(authUserMiddleware, changeUserPassword);
+router.route("/me").get(authUserMiddleware, getUser);
 
 // // food partner routes
 router.route("/register-food-partner").post(createFoodPartner);
