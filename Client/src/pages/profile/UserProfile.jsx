@@ -1,0 +1,109 @@
+import React, { useState } from "react";
+import {
+  User,
+  Mail,
+  Lock,
+  KeyRound,
+  ChevronDown,
+  ChevronUp,
+  User2Icon,
+} from "lucide-react";
+
+const UserProfile = () => {
+  const user = {
+    name: "Ayan Hussain",
+    email: "ayan@gmail.com",
+    avatar: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+  };
+
+  const [showPasswordForm, setShowPasswordForm] = useState(false);
+
+  const [form, setForm] = useState({
+    oldPassword: "",
+    newPassword: "",
+  });
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(form);
+  };
+
+  return (
+    <div className="min-h-screen bg-black text-white flex justify-center">
+      <div className="bg-[#111] border border-gray-800 shadow-2xl p-6 w-full max-w-md">
+        {/* Avatar Section */}
+        <div className="flex flex-col items-center">
+          <User2Icon className="w-24 h-24 rounded-full border-4 " />
+          {/* <img src={user.avatar} alt="avatar" /> */}
+          <h2 className="text-xl font-semibold mt-3 flex items-center gap-2">
+            <User size={18} /> {user.name}
+          </h2>
+          <p className="text-gray-400 flex items-center gap-2 mt-1">
+            <Mail size={16} /> {user.email}
+          </p>
+        </div>
+
+        <hr className="my-6 border-gray-800" />
+
+        {/* Change Password Toggle */}
+        <button
+          onClick={() => setShowPasswordForm(!showPasswordForm)}
+          className="w-full flex justify-between items-center bg-[#1a1a1a] hover:bg-[#222] px-4 py-3 rounded-lg transition"
+        >
+          <div className="flex items-center gap-2">
+            <KeyRound size={18} />
+            <span>Change Password</span>
+          </div>
+
+          {showPasswordForm ? (
+            <ChevronUp size={18} />
+          ) : (
+            <ChevronDown size={18} />
+          )}
+        </button>
+
+        {/* Password Form */}
+        {showPasswordForm && (
+          <form onSubmit={handleSubmit} className="mt-4 space-y-4">
+            <div className="relative">
+              <Lock size={16} className="absolute top-3 left-3 text-gray-400" />
+              <input
+                type="password"
+                name="oldPassword"
+                placeholder="Old Password"
+                value={form.oldPassword}
+                onChange={handleChange}
+                className="w-full bg-[#1a1a1a] border border-gray-700 rounded-lg pl-10 pr-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
+              />
+            </div>
+
+            <div className="relative">
+              <Lock size={16} className="absolute top-3 left-3 text-gray-400" />
+              <input
+                type="password"
+                name="newPassword"
+                placeholder="New Password"
+                value={form.newPassword}
+                onChange={handleChange}
+                className="w-full bg-[#1a1a1a] border border-gray-700 rounded-lg pl-10 pr-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-red-600 hover:bg-red-700 py-2 rounded-lg transition font-medium"
+            >
+              Update Password
+            </button>
+          </form>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default UserProfile;

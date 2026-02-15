@@ -8,8 +8,12 @@ import Home from "../pages/home/Home";
 import NotFound from "../pages/NotFound";
 import { FoodPartnerDashboard } from "../pages/home/FoodPartnerDashboard";
 import FoodPartnerProfile from "../pages/profile/FoodPartnerProfile";
+import { useState } from "react";
+import BottomBar from "../pages/home/BottomBar";
+import UserProfile from "../pages/profile/UserProfile";
 
 function AppRoutes() {
+  const [active, setActive] = useState("home");
   return (
     <>
       <BrowserRouter>
@@ -24,8 +28,10 @@ function AppRoutes() {
           <Route path="/foodPartner-login" element={<FoodPartnerLogin />} />
           <Route path="/create-food" element={<FoodPartnerDashboard />} />
           <Route path="/foodPartner/:id" element={<FoodPartnerProfile />} />
+          <Route path="/profile" element={<UserProfile />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <BottomBar active={active} setActive={setActive} />
       </BrowserRouter>
     </>
   );

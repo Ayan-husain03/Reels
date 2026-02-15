@@ -75,10 +75,9 @@ const ReelCard = ({ reel, muted, setMuted }) => {
 
       <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-4 py-3 text-white">
         <h1 className="text-lg font-semibold">Reels</h1>
-        <User className="h-5 w-5" />
       </div>
 
-      <div className="absolute right-3 bottom-24 flex flex-col items-center gap-6 text-white">
+      <div className="absolute right-3 bottom-30 flex flex-col items-center gap-6 text-white">
         <div className="flex flex-col items-center">
           <Heart className="h-7 w-7" fill="#ff0000" stroke="#ff0000" />
           <span className="text-xs mt-1">{reel.likes || 10}</span>
@@ -91,7 +90,7 @@ const ReelCard = ({ reel, muted, setMuted }) => {
         <Bookmark className="h-7 w-7" color="#ffffff" />
       </div>
 
-      <div className="absolute bottom-6 left-0 right-0 px-4 text-white">
+      <div className="absolute bottom-30 left-0 right-0 px-4 text-white">
         <p className="text-sm font-semibold">
           <Link to={`/foodPartner/${reel?.foodPartner?._id}`}>
             @{reel?.foodPartner?.name || "user"}
