@@ -44,9 +44,7 @@ const authUserMiddleware = async (req, res, next) => {
       });
     }
     const decoded = jwt.verify(token, process.env.JWT_SECERET);
-    const user = await User.findById(decoded._id || decoded.id).select(
-      "-password",
-    );
+    const user = await User.findById(decoded._id || decoded.id);
     if (!user) {
       return res.status(401).json({
         success: false,

@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  changeUserPassword,
   createFoodPartner,
   createUser,
   loginFoodPartner,
@@ -7,6 +8,7 @@ import {
   logoutFoodPartner,
   logoutUser,
 } from "../controllers/user.controller.js";
+import { authUserMiddleware } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
@@ -15,6 +17,7 @@ const router = express.Router();
 router.route("/register").post(createUser);
 router.route("/login").post(loginUser);
 router.route("/logout").get(logoutUser);
+router.route("/changePassword").put(authUserMiddleware, changeUserPassword);
 
 // // food partner routes
 router.route("/register-food-partner").post(createFoodPartner);

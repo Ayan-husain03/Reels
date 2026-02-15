@@ -231,6 +231,41 @@ async function logoutFoodPartner(req, res) {
   }
 }
 
+async function changeUserPassword(req, res) {
+  try {
+    const { oldPassword, newPassword } = req.body;
+    const user = req.user;
+    if (!oldPassword || !newPassword) {
+      return res.status(400).json({
+        message: "All fields are required",
+      });
+    }
+    if (oldPassword === newPassword) {
+      return res.status(400).json({
+        message: "new password should not be same please enter new password",
+      });
+    }
+    // check password
+    const isPasswordCorrect = await bcrypt.compare(oldPassword, user.password);
+    if (!isPasswordCorrect) {
+      return res.status(400).json({
+        message: "oldPassword is incorrect",
+      });
+    }
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+    return res.status(200).json({
+      message: "password changed successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "internal server error in changing password",
+      error: error,
+    });
+  }
+}
+
 export {
   createUser,
   loginUser,
@@ -238,4 +273,5 @@ export {
   logoutFoodPartner,
   loginFoodPartner,
   createFoodPartner,
+  changeUserPassword,
 };
