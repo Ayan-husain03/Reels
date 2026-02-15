@@ -12,8 +12,13 @@ const useAuthStore = create((set) => ({
       set({ user: null, loading: false });
     }
   },
-  logout: () => {
-    set({ user: null });
+  logout: async function () {
+    try {
+      const res = await api.get("/user/logout");
+      set({ user: null });
+    } catch (error) {
+      console.log(error.response?.message || "error while logout");
+    }
   },
 }));
 

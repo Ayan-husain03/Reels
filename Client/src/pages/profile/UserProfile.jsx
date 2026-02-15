@@ -7,6 +7,7 @@ import {
   ChevronDown,
   ChevronUp,
   User2Icon,
+  LogOut,
 } from "lucide-react";
 
 import api from "../../lib/axios";
@@ -15,7 +16,7 @@ import useAuthStore from "../../store/userAuthStore";
 import { useEffect } from "react";
 
 const UserProfile = () => {
-  const { user, loading, fetchUser } = useAuthStore();
+  const { user, loading, fetchUser, logout } = useAuthStore();
 
   useEffect(() => {
     fetchUser();
@@ -61,6 +62,17 @@ const UserProfile = () => {
   return (
     <div className="min-h-screen bg-black text-white flex justify-center">
       <div className="bg-[#111] border border-gray-800 shadow-2xl p-6 w-full max-w-md">
+        <div className="absolute right-3">
+          <button
+            className="flex items-center justify-center bg-white text-black p-2  rounded-lg tracking-tighter text-sm
+          hover:border hover:border-white hover:bg-black hover:text-white cursor-pointer active:bg-white active:text-black
+          active:scale-90 transition-all duration-75 "
+            onClick={() => logout()}
+          >
+            <LogOut />
+            logout
+          </button>
+        </div>
         {/* Avatar Section */}
         <div className="flex flex-col items-center">
           <User2Icon className="w-24 h-24 rounded-full border-4 " />
