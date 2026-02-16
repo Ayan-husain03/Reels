@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router";
 import { UserRegister } from "../pages/auth/UserRegister";
 import { UserLogin } from "../pages/auth/UserLogin";
@@ -11,14 +11,27 @@ import FoodPartnerProfile from "../pages/profile/FoodPartnerProfile";
 import { useState } from "react";
 import BottomBar from "../pages/home/BottomBar";
 import UserProfile from "../pages/profile/UserProfile";
+import ProtectedRoute from "./ProtectedRoute";
+import useAuthStore from "../store/userAuthStore";
 
 function AppRoutes() {
   const [active, setActive] = useState("home");
+  const { fetchUser } = useAuthStore();
+  useEffect(() => {
+    fetchUser();
+  }, []);
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/user-login" element={<UserLogin />} />
           <Route path="/user-register" element={<UserRegister />} />
           <Route
@@ -28,7 +41,14 @@ function AppRoutes() {
           <Route path="/foodPartner-login" element={<FoodPartnerLogin />} />
           <Route path="/create-food" element={<FoodPartnerDashboard />} />
           <Route path="/foodPartner/:id" element={<FoodPartnerProfile />} />
-          <Route path="/profile" element={<UserProfile />} />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <UserProfile />
+              </ProtectedRoute>
+            }
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <BottomBar active={active} setActive={setActive} />

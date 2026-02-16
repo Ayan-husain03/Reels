@@ -6,12 +6,14 @@ import { PageWrapper } from "../../component/PageWrapper";
 import { TextField } from "../../component/TextField";
 import { useNavigate } from "react-router";
 import api from "../../lib/axios";
+import useAuthStore from "../../store/userAuthStore";
 
 const UserLogin = () => {
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
+  const {fetchUser} = useAuthStore()
   const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,6 +26,7 @@ const UserLogin = () => {
         email: form.email,
         password: form.password,
       });
+      await fetchUser()
       console.log(res.data);
       navigate("/");
     } catch (error) {

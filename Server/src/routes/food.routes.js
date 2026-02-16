@@ -8,6 +8,7 @@ import {
   createFoodItem,
   getAllFoodItem,
   getFoodPartnerById,
+  toggleLikeFoodItem,
 } from "../controllers/foodItem.controller.js";
 // import { createFoodPartner } from "../controllers/user.controller.js";
 
@@ -21,5 +22,6 @@ foodRouter.post(
 );
 foodRouter.get("/all", authUserMiddleware, getAllFoodItem);
 foodRouter.get("/food-partner/:_id", authUserMiddleware, getFoodPartnerById);
+foodRouter.post("/foodItem/:id/like", authUserMiddleware, toggleLikeFoodItem);
 
 export default foodRouter;

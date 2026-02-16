@@ -90,4 +90,39 @@ const getFoodPartnerById = async (req, res) => {
   }
 };
 
-export { createFoodItem, getAllFoodItem, getFoodPartnerById };
+// // toggle like for foodItem
+async function toggleLikeFoodItem(req, res) {
+  try {
+    const { id } = req.params;
+    const userId = req.user?._id;
+    const foodItem = await FoodItem.findById(id);
+    if (!foodItem) {
+      res.status(404).json({
+        message: "FoodItem not found",
+      });
+    }
+    const alreadyLiked = foodItem.likes.includes(userId);
+    if (alreadyLiked) {
+      foodItem.likes.pull(userId);
+    } else {
+      foodItem.likes.push(userId);
+    }
+    await foodItem.save();
+    res.status(200).json({
+      message: "Like status updated",
+      likesCount: foodItem.likes.length,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "foodItem liked failed",
+      error: error.message,
+    });
+  }
+}
+
+export {
+  createFoodItem,
+  getAllFoodItem,
+  getFoodPartnerById,
+  toggleLikeFoodItem,
+};

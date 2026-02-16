@@ -117,6 +117,7 @@ const Home = () => {
       console.error(err);
     }
   }
+  console.log(data)
 
   useEffect(() => {
     getReels();

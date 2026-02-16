@@ -16,11 +16,8 @@ import useAuthStore from "../../store/userAuthStore";
 import { useEffect } from "react";
 
 const UserProfile = () => {
-  const { user, loading, fetchUser, logout } = useAuthStore();
+  const { user, logout } = useAuthStore();
 
-  useEffect(() => {
-    fetchUser();
-  }, []);
   // console.log(user);
 
   const [showPasswordForm, setShowPasswordForm] = useState(false);

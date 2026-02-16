@@ -19,6 +19,7 @@ const foodItemSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "FoodPartner",
     },
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
   {
     timestamps: true,
