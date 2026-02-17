@@ -11,9 +11,12 @@ import {
 } from "lucide-react";
 import api from "../../lib/axios";
 import { Link } from "react-router";
+import useAuthStore from "../../store/userAuthStore";
+import LikeButton from "../../component/LikeButton";
 
 const ReelCard = ({ reel, muted, setMuted }) => {
   const [showIcon, setShowIcon] = useState(false);
+  const { user } = useAuthStore();
   const videoRef = useRef(null);
 
   const handleTap = () => {
@@ -78,10 +81,11 @@ const ReelCard = ({ reel, muted, setMuted }) => {
       </div>
 
       <div className="absolute right-3 bottom-30 flex flex-col items-center gap-6 text-white">
-        <div className="flex flex-col items-center">
+        {/* <div className="flex flex-col items-center">
           <Heart className="h-7 w-7" fill="#ff0000" stroke="#ff0000" />
           <span className="text-xs mt-1">{reel.likes || 10}</span>
-        </div>
+        </div> */}
+        <LikeButton currentUserId={user?.user?._id} item={reel} />
         <div className="flex flex-col items-center">
           <MessageCircle className="h-7 w-7" />
           <span className="text-xs mt-1">{reel.comments || 20}</span>
@@ -117,7 +121,7 @@ const Home = () => {
       console.error(err);
     }
   }
-  console.log(data)
+  // console.log(data)
 
   useEffect(() => {
     getReels();
