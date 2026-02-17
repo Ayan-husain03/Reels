@@ -120,9 +120,39 @@ async function toggleLikeFoodItem(req, res) {
   }
 }
 
+// ? toggle save foodItem
+async function toggleSaveFoodItem(req, res) {
+  try {
+    const { id } = req.params;
+    const userId = req?.user?._id;
+    const foodItem = await FoodItem.findById(id);
+    if (!foodItem) {
+      res.status(404).json({
+        message: "FoodItem not found",
+      });
+    }
+    const isAlreadySaved = foodItem.savedBy.includes(userId);
+    if (isAlreadySaved) {
+      foodItem.savedBy.pull(userId); // * unsave savedFood
+    } else {
+      foodItem.savedBy.push(userId); // ! save foodItem
+    }
+    await foodItem.save();
+
+    res.status(200).json({
+      message: "Save status updated",
+      savesCount: foodItem.savedBy.length,
+      // isSaved: !alreadySaved,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error while saving food" });
+  }
+}
+
 export {
   createFoodItem,
   getAllFoodItem,
   getFoodPartnerById,
   toggleLikeFoodItem,
+  toggleSaveFoodItem,
 };
