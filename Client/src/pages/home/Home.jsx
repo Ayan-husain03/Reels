@@ -13,6 +13,7 @@ import api from "../../lib/axios";
 import { Link } from "react-router";
 import useAuthStore from "../../store/userAuthStore";
 import LikeButton from "../../component/LikeButton";
+import SaveButton from "../../component/SaveButton";
 
 const ReelCard = ({ reel, muted, setMuted }) => {
   const [showIcon, setShowIcon] = useState(false);
@@ -80,7 +81,7 @@ const ReelCard = ({ reel, muted, setMuted }) => {
         <h1 className="text-lg font-semibold">Reels</h1>
       </div>
 
-      <div className="absolute right-3 bottom-30 flex flex-col items-center gap-6 text-white">
+      <div className="absolute right-3 bottom-30 flex flex-col items-center gap-6 text-white z-20">
         {/* <div className="flex flex-col items-center">
           <Heart className="h-7 w-7" fill="#ff0000" stroke="#ff0000" />
           <span className="text-xs mt-1">{reel.likes || 10}</span>
@@ -90,8 +91,8 @@ const ReelCard = ({ reel, muted, setMuted }) => {
           <MessageCircle className="h-7 w-7" />
           <span className="text-xs mt-1">{reel.comments || 20}</span>
         </div>
-        {/* <Share2 className="h-7 w-7" /> */}
-        <Bookmark className="h-7 w-7" color="#ffffff" />
+        {/* <Bookmark className="h-7 w-7" color="#ffffff"/> */}
+        <SaveButton item={reel} userId={user?.user?._id}  />
       </div>
 
       <div className="absolute bottom-30 left-0 right-0 px-4 text-white">
@@ -113,9 +114,7 @@ const Home = () => {
 
   async function getReels() {
     try {
-      const res = await api.get("/food/all", {
-        withCredentials: true,
-      });
+      const res = await api.get("/food/all");
       setData(res.data?.data);
     } catch (err) {
       console.error(err);
@@ -126,6 +125,7 @@ const Home = () => {
   useEffect(() => {
     getReels();
   }, []);
+  console.log(data)
 
   return (
     <div className="h-screen w-full overflow-y-scroll snap-y snap-mandatory bg-black">
