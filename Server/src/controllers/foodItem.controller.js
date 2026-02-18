@@ -135,7 +135,7 @@ async function toggleSaveFoodItem(req, res) {
     if (isAlreadySaved) {
       foodItem.savedBy.pull(userId); // * unsave savedFood
     } else {
-      foodItem.savedBy.push(userId); // ! save foodItem
+      foodItem.savedBy.addToSet(userId); // ! save foodItem   // duplicate-safe add
     }
     await foodItem.save();
 
@@ -149,10 +149,40 @@ async function toggleSaveFoodItem(req, res) {
   }
 }
 
+// * getAllSaveFood
+
+const getAllSaveFoodItem = async (req, res) => {
+  const userId = req?.user?._id;
+  try {
+    const savedFoodItems = await FoodItem.find({
+      savedBy: userId,
+    }).populate("foodPartner", "_id name");
+    if (savedFoodItems.length === 0) {
+      return res.status(200).json({
+        success: false,
+        message: "No food item saved",
+        data: [],
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "foodItems fetched",
+      data: savedFoodItems,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to get saved food items",
+      error: error.message,
+    });
+  }
+};
+
 export {
   createFoodItem,
   getAllFoodItem,
   getFoodPartnerById,
   toggleLikeFoodItem,
   toggleSaveFoodItem,
+  getAllSaveFoodItem,
 };

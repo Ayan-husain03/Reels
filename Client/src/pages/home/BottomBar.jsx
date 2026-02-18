@@ -12,13 +12,14 @@ const BottomBar = ({ active, setActive }) => {
           />
         </button>
       </Link>
-
-      <button onClick={() => setActive("bookmark")}>
-        <Bookmark
-          size={22}
-          className={active === "bookmark" ? "text-white" : "text-gray-400"}
-        />
-      </button>
+      <Link to="/saved-food">
+        <button onClick={() => setActive("bookmark")}>
+          <Bookmark
+            size={22}
+            className={active === "bookmark" ? "text-white" : "text-gray-400"}
+          />
+        </button>
+      </Link>
 
       <Link to={"/profile"}>
         <button onClick={() => setActive("profile")}>

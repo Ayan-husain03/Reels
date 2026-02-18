@@ -13,6 +13,7 @@ import BottomBar from "../pages/home/BottomBar";
 import UserProfile from "../pages/profile/UserProfile";
 import ProtectedRoute from "./ProtectedRoute";
 import useAuthStore from "../store/userAuthStore";
+import SavedFoods from "../pages/home/SavedFoods";
 
 function AppRoutes() {
   const [active, setActive] = useState("home");
@@ -46,6 +47,14 @@ function AppRoutes() {
             element={
               <ProtectedRoute>
                 <UserProfile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/saved-food"
+            element={
+              <ProtectedRoute>
+                <SavedFoods />
               </ProtectedRoute>
             }
           />

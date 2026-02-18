@@ -7,6 +7,7 @@ import { upload } from "../middleware/multer.middleware.js";
 import {
   createFoodItem,
   getAllFoodItem,
+  getAllSaveFoodItem,
   getFoodPartnerById,
   toggleLikeFoodItem,
   toggleSaveFoodItem,
@@ -23,6 +24,7 @@ foodRouter.post(
 );
 foodRouter.get("/all", authUserMiddleware, getAllFoodItem);
 foodRouter.get("/food-partner/:_id", authUserMiddleware, getFoodPartnerById);
+foodRouter.get("/saved-foods", authUserMiddleware, getAllSaveFoodItem);
 foodRouter.post("/foodItem/:id/like", authUserMiddleware, toggleLikeFoodItem);
 foodRouter.post("/foodItem/:id/save", authUserMiddleware, toggleSaveFoodItem);
 
