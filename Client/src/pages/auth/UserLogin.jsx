@@ -7,13 +7,14 @@ import { TextField } from "../../component/TextField";
 import { useNavigate } from "react-router";
 import api from "../../lib/axios";
 import useAuthStore from "../../store/userAuthStore";
+import toast from "react-hot-toast";
 
 const UserLogin = () => {
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
-  const {fetchUser} = useAuthStore()
+  const { fetchUser } = useAuthStore();
   const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,11 +27,13 @@ const UserLogin = () => {
         email: form.email,
         password: form.password,
       });
-      await fetchUser()
+      await fetchUser();
       console.log(res.data);
+      toast.success(res.data?.message || "User logged in successfully");
       navigate("/");
     } catch (error) {
       console.log(error.response?.data || "error in login");
+      toast.error(error.response?.data || "error in login");
     } finally {
     }
   };

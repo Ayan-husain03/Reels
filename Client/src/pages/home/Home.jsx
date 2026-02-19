@@ -14,8 +14,9 @@ import { Link } from "react-router";
 import useAuthStore from "../../store/userAuthStore";
 import LikeButton from "../../component/LikeButton";
 import SaveButton from "../../component/SaveButton";
+import CommentModal from "../../component/CommentModel";
 
-const ReelCard = ({ reel, muted, setMuted }) => {
+const ReelCard = ({ reel, muted, setMuted, openComments }) => {
   const [showIcon, setShowIcon] = useState(false);
   const { user } = useAuthStore();
   const videoRef = useRef(null);
@@ -88,11 +89,14 @@ const ReelCard = ({ reel, muted, setMuted }) => {
         </div> */}
         <LikeButton currentUserId={user?.user?._id} item={reel} />
         <div className="flex flex-col items-center">
-          <MessageCircle className="h-7 w-7" />
-          <span className="text-xs mt-1">{reel.comments || 20}</span>
+          <MessageCircle
+            className="h-7 w-7 cursor-pointer"
+            onClick={() => openComments(reel._id)}
+          />
+          <span className="text-xs mt-1">{reel.commentsCount || 0}</span>
         </div>
         {/* <Bookmark className="h-7 w-7" color="#ffffff"/> */}
-        <SaveButton item={reel} userId={user?.user?._id}  />
+        <SaveButton item={reel} userId={user?.user?._id} />
       </div>
 
       <div className="absolute bottom-30 left-0 right-0 px-4 text-white">
@@ -111,6 +115,7 @@ const ReelCard = ({ reel, muted, setMuted }) => {
 const Home = () => {
   const [data, setData] = useState([]);
   const [muted, setMuted] = useState(true); // 🔥 GLOBAL STATE
+  const [selectedFoodId, setSelectedFoodId] = useState(null);
 
   async function getReels() {
     try {
@@ -121,20 +126,38 @@ const Home = () => {
     }
   }
   // console.log(data)
+  // ? function for showing countincreament
+  const increaseCommentCount = (foodId) => {
+    setData((prev) =>
+      prev.map((item) =>
+        item._id === foodId
+          ? { ...item, commentsCount: (item.commentsCount || 0) + 1 }
+          : item,
+      ),
+    );
+  };
 
   useEffect(() => {
     getReels();
   }, []);
-  console.log(data)
+  console.log(data);
 
   return (
     <div className="h-screen w-full overflow-y-scroll snap-y snap-mandatory bg-black">
+      {selectedFoodId && (
+        <CommentModal
+          foodId={selectedFoodId}
+          onClose={() => setSelectedFoodId(null)}
+          increaseCommentCount={increaseCommentCount}
+        />
+      )}
       {data?.map((reel) => (
         <ReelCard
           key={reel?._id}
           reel={reel}
           muted={muted}
           setMuted={setMuted}
+          openComments={(id) => setSelectedFoodId(id)}
         />
       ))}
     </div>

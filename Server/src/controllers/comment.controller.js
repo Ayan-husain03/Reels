@@ -1,4 +1,5 @@
 import Comment from "../models/comment.model.js";
+import FoodItem from "../models/foodItem.model.js";
 
 // ? Add comment
 
@@ -17,6 +18,9 @@ async function addComment(req, res) {
       text,
       user: userId,
       food: foodId,
+    });
+    await FoodItem.findByIdAndUpdate(foodId, {
+      $inc: { commentsCount: 1 },
     });
     return res.status(201).json({
       success: true,

@@ -6,6 +6,7 @@ import { PageWrapper } from "../../component/PageWrapper";
 import { TextField } from "../../component/TextField";
 import api from "../../lib/axios";
 import { useNavigate } from "react-router";
+import toast from "react-hot-toast";
 
 const UserRegister = () => {
   const [form, setForm] = useState({
@@ -13,8 +14,8 @@ const UserRegister = () => {
     email: "",
     password: "",
   });
-    const [loading, setLoading] = useState(false);
-    const navigate = useNavigate()
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -30,9 +31,11 @@ const UserRegister = () => {
         password: form.password,
       });
       console.log("success: ", res.data);
-        navigate("/")
+      toast.success(res.data?.message || "User created successfully");
+      navigate("/");
     } catch (error) {
       console.error(error.response?.data || "error creating user");
+      toast.error(error.response?.data?.message || "error creating user");
     } finally {
       setLoading(false);
       setForm({
@@ -43,8 +46,8 @@ const UserRegister = () => {
     }
   };
   return (
-      <PageWrapper>
-          {/* {loading && <h1>Loading...</h1>} */}
+    <PageWrapper>
+      {/* {loading && <h1>Loading...</h1>} */}
       <form action="" onSubmit={handleSubmit}>
         <Card title="Create account" subtitle="Register as a user">
           <TextField

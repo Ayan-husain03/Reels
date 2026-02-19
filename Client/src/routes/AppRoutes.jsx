@@ -14,6 +14,7 @@ import UserProfile from "../pages/profile/UserProfile";
 import ProtectedRoute from "./ProtectedRoute";
 import useAuthStore from "../store/userAuthStore";
 import SavedFoods from "../pages/home/SavedFoods";
+import CommentModal from "../component/CommentModel";
 
 function AppRoutes() {
   const [active, setActive] = useState("home");
@@ -59,6 +60,7 @@ function AppRoutes() {
             }
           />
           <Route path="*" element={<NotFound />} />
+          <Route path="/comment" element={<CommentModal />} />
         </Routes>
         <BottomBar active={active} setActive={setActive} />
       </BrowserRouter>
