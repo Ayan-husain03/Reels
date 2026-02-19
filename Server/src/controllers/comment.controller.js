@@ -1,4 +1,6 @@
-import Comment from "../models/comment.model";
+import Comment from "../models/comment.model.js";
+
+// ? Add comment
 
 async function addComment(req, res) {
   try {
@@ -30,4 +32,25 @@ async function addComment(req, res) {
   }
 }
 
-export { addComment };
+// * getAll comments controller
+async function getAllComment(req, res) {
+  try {
+    const { foodId } = req.params;
+    const comments = await Comment.find({ food: foodId })
+      .populate("user", "name")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      data: comments,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "error in fetching comments",
+      error: error.message,
+    });
+  }
+}
+
+export { addComment, getAllComment };
