@@ -3,6 +3,13 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import FoodPartner from "../models/foodpartner.model.js";
 
+const cookieOption = {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  path: "/",
+};
+
 // * create user function
 async function createUser(req, res) {
   try {
@@ -30,7 +37,7 @@ async function createUser(req, res) {
     });
     return res
       .status(201)
-      .cookie("token", token)
+      .cookie("token", token, cookieOption)
       .json({
         message: "user created successfully",
         user: {
@@ -82,7 +89,7 @@ async function loginUser(req, res) {
 
     return res
       .status(200)
-      .cookie("token", token)
+      .cookie("token", token, cookieOption)
       .json({
         message: "login successfully",
         user: {
@@ -103,7 +110,7 @@ async function loginUser(req, res) {
 
 async function logoutUser(req, res) {
   try {
-    return res.status(200).clearCookie("token").json({
+    return res.status(200).clearCookie("token", cookieOption).json({
       message: "User logged out",
     });
   } catch (error) {
@@ -145,7 +152,7 @@ async function createFoodPartner(req, res) {
     });
     return res
       .status(201)
-      .cookie("token", token)
+      .cookie("token", token, cookieOption)
       .json({
         message: "food partner created successfully",
         user: {
@@ -199,7 +206,7 @@ async function loginFoodPartner(req, res) {
 
     return res
       .status(200)
-      .cookie("token", token)
+      .cookie("token", token, cookieOption)
       .json({
         message: "login successfully",
         user: {
@@ -220,7 +227,7 @@ async function loginFoodPartner(req, res) {
 
 async function logoutFoodPartner(req, res) {
   try {
-    return res.status(200).clearCookie("token").json({
+    return res.status(200).clearCookie("token", cookieOption).json({
       message: "User logged out",
     });
   } catch (error) {
