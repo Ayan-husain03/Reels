@@ -7,7 +7,6 @@ const imageKit = new ImageKit({
   urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
 });
 
-console.log("IK PRIVATE:", process.env.IMAGEKIT_PRIVATE_KEY);
 const uploadFile = async (file, fileName) => {
   try {
     const result = await imageKit.upload({
