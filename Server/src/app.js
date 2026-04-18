@@ -8,7 +8,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://192.168.1.7:5173", "https://reels-coral.vercel.app"],
+    origin: ["http://localhost:5173", "http://192.168.1.7:5173", "https://reels-coral.vercel.app", "https://reels-hgxo5kkhg-ayan-husains-projects.vercel.app"],
     credentials: true,
   }),
 );
